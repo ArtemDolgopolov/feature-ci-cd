@@ -6,6 +6,14 @@ import CatalogPage from './pages/catalog-page';
 import ErrorPage from './pages/error-page';
 import PlantPage from './pages/plant-page';
 
+declare const process: {
+  env: {
+    PUBLIC_PATH?: string;
+  };
+};
+
+const BASE_PATH = (process.env.PUBLIC_PATH || '/').replace(/\/$/, '');
+
 class Router {
   static catalogPage: CatalogPage;
   static cartPage: CartPage;
@@ -20,8 +28,9 @@ class Router {
   }
 
   static render(pathname: string) {
-    // console.log('render:', pathname);
-    switch (pathname) {
+    const path = pathname.replace(BASE_PATH, '') || '/';
+
+    switch (path) {
       case PagesList.catalogPage:
         Router.catalogPage.draw();
         break;
@@ -32,8 +41,8 @@ class Router {
         this.goTo(PagesList.catalogPage);
         break;
       default:
-        if (isPlantsId(pathname)) {
-          Router.plantPage.draw(pathname.slice(1));
+        if (isPlantsId(path)) {
+          Router.plantPage.draw(path.slice(1));
         } else {
           Router.errorPage.draw();
         }
@@ -43,8 +52,9 @@ class Router {
   }
 
   static goTo(pageId: string) {
-    window.history.pushState({ pageId }, pageId, pageId);
-    Router.render(pageId);
+    const fullPath = `${BASE_PATH}${pageId}`;
+    window.history.pushState({ pageId }, pageId, fullPath);
+    Router.render(fullPath);
     window.scrollTo(0, 0);
   }
 
@@ -54,11 +64,12 @@ class Router {
       if (!link.classList.contains('link-changed')) {
         link.addEventListener('click', (e) => {
           e.preventDefault();
-          if (
-            link instanceof HTMLAnchorElement &&
-            (new URL(link.href).pathname !== '/catalog' || new URL(window.location.href).pathname !== '/catalog')
-          ) {
-            Router.goTo(new URL(link.href).pathname);
+          if (link instanceof HTMLAnchorElement) {
+            const linkPath = new URL(link.href).pathname.replace(BASE_PATH, '') || '/';
+            const currentPath = new URL(window.location.href).pathname.replace(BASE_PATH, '') || '/';
+            if (linkPath !== currentPath) {
+              Router.goTo(linkPath === '/' ? PagesList.catalogPage : linkPath);
+            }
           }
         });
         link.classList.add('link-changed');
