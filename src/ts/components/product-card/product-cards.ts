@@ -5,9 +5,39 @@ import Router from '../../router';
 
 class ProductCards {
   public cart: Cart;
+  private photoObserver: IntersectionObserver | null = null;
+
   constructor(cart: Cart) {
     this.cart = cart;
   }
+
+  private observePhotos(container: HTMLElement): void {
+    if (!this.photoObserver) {
+      this.photoObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+
+            const photo = entry.target as HTMLElement;
+            const bg = photo.dataset.bg;
+
+            if (bg) {
+              photo.style.backgroundImage = `url('${bg}')`;
+              photo.dataset.loaded = 'true';
+            }
+
+            this.photoObserver?.unobserve(entry.target);
+          });
+        },
+        { rootMargin: '200px 0px' }
+      );
+    }
+
+    container.querySelectorAll('.product__photo:not([data-loaded])').forEach((photo) => {
+      this.photoObserver?.observe(photo);
+    });
+  }
+
   draw(data: Products[]): void {
     const productCard: Products[] = data;
     const fragment: DocumentFragment = document.createDocumentFragment();
@@ -17,10 +47,7 @@ class ProductCards {
       const productCardClone: Node = productCardTemp.content.cloneNode(true);
       if (!isHTMLElement(productCardClone)) throw new Error(`Element is not HTMLElement!`);
 
-      getExistentElement(
-        '.product__photo',
-        productCardClone
-      ).style.backgroundImage = `url('assets/img/${item.thumbnail}')`;
+      getExistentElement('.product__photo', productCardClone).dataset.bg = `assets/img/${item.thumbnail}`;
 
       getExistentElement('.product__type', productCardClone).textContent = item.type;
       getExistentElement('.product__title', productCardClone).textContent = item.title;
@@ -48,7 +75,9 @@ class ProductCards {
 
       fragment.append(productCardClone);
     });
-    getExistentElement('.products__container').appendChild(fragment);
+    const container = getExistentElement('.products__container');
+    container.appendChild(fragment);
+    this.observePhotos(container);
   }
 }
 
