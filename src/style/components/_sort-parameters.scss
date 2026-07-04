@@ -9,6 +9,7 @@
   &__item {
     @include mixins.flexbox();
     margin-right: 10px;
+    gap: 4px;
 
     @media (max-width: 600px) {
       margin-right: 5px;
@@ -17,21 +18,24 @@
 
   &__up,
   &__down {
-    width: 18px;
-    height: 18px;
-    background: url('assets/svg/up.svg') center center/contain no-repeat;
-    opacity: 0.85;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    background: url('assets/svg/up.svg') center center/18px 18px no-repeat;
+    opacity: 1;
     cursor: pointer;
     transition: 0.5s;
+
     &:hover {
-      opacity: 1;
+      background-color: variables.$green-extra-light-opacity;
     }
   }
 
   &__down {
     transform: rotate(180deg);
-    margin-left: -2px;
-    background: url('assets/svg/up.svg') center center/contain no-repeat;
+    margin-left: 0;
+    background: url('assets/svg/up.svg') center center/18px 18px no-repeat;
   }
 }
 
@@ -50,7 +54,7 @@
 .sort-input {
   height: 28px;
   width: 200px;
-  border: solid 1px variables.$grey-medium;
+  border: solid 1px variables.$grey-dark;
   border-radius: 14px;
   outline: none;
   background: url('assets/svg/search.svg') 95% center no-repeat;
@@ -76,29 +80,30 @@
 
   &__portrait,
   &__landscape {
-    width: 28px;
-    height: 28px;
-    border: solid 1px variables.$grey-medium;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    border: solid 1px variables.$grey-dark;
     border-radius: 5px;
-    background: url('assets/svg/portrait.svg') center center no-repeat;
-    background-size: 20px;
-    opacity: 0.85;
+    background: url('assets/svg/portrait.svg') center center/20px no-repeat;
+    opacity: 1;
     transition: 0.5s;
     cursor: pointer;
 
     &:hover,
     &:active {
-      opacity: 1;
+      background-color: variables.$green-extra-light-opacity;
     }
   }
 
   &__landscape {
-    background: url('assets/svg/landscape.svg') center center no-repeat;
-    background-size: 20px;
+    background: url('assets/svg/landscape.svg') center center/20px no-repeat;
   }
 
   .active {
-    opacity: 1;
+    border-color: variables.$green-dark;
+    background-color: variables.$green-extra-light-opacity;
   }
 
   @media (max-width: 600px) {
@@ -113,4 +118,8 @@
   padding: 0;
   background-color: transparent;
   font: inherit;
+}
+
+.sort-control_active {
+  background-color: variables.$green-extra-light-opacity;
 }

@@ -277,7 +277,7 @@ class Filter {
     const controls = document.querySelectorAll('.sort-control');
     controls.forEach((control) => {
       if (isHTMLElement(control)) {
-        control.style.opacity = '';
+        control.classList.remove('sort-control_active');
       }
     });
   }
