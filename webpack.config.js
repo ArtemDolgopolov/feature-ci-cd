@@ -39,6 +39,21 @@ module.exports = {
       template: 'src/index.html',
     }),
 
+    {
+      apply: (compiler) => {
+        compiler.hooks.compilation.tap('LcpPreloadPlugin', (compilation) => {
+          HtmlWebpackPlugin.getHooks(compilation).beforeEmit.tap('LcpPreloadPlugin', (data) => {
+            const href = `${publicPath}assets/img/plants/1/1.jpg`;
+            data.html = data.html.replace(
+              '<title>',
+              `<link rel="preload" as="image" href="${href}" fetchpriority="high"><title>`
+            );
+            return data;
+          });
+        });
+      },
+    },
+
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash].css',
     }),
@@ -60,6 +75,11 @@ module.exports = {
       {
         test: /\.html$/i,
         loader: 'html-loader',
+        options: {
+          sources: {
+            urlFilter: (_attribute, value) => !value.includes('assets/img/plants'),
+          },
+        },
       },
       {
         test: /\.(ts|tsx)$/i,

@@ -38,7 +38,7 @@ class Router {
         Router.cartPage.draw();
         break;
       case '/':
-        this.goTo(PagesList.catalogPage);
+        Router.catalogPage.draw();
         break;
       default:
         if (isPlantsId(path)) {

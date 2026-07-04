@@ -29,9 +29,9 @@ class ProductCards {
       img.decoding = 'async';
       photo.prepend(img);
 
-      if (index === 0) {
+      if (index < 3) {
         img.setAttribute('fetchpriority', 'high');
-      } else if (index >= 3) {
+      } else if (index >= 6) {
         img.loading = 'lazy';
       }
 
