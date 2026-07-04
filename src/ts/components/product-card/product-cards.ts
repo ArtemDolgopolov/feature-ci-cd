@@ -43,11 +43,19 @@ class ProductCards {
     const fragment: DocumentFragment = document.createDocumentFragment();
     const productCardTemp: HTMLTemplateElement = getExistentElement<HTMLTemplateElement>('#productCardTemp');
 
-    productCard.forEach((item) => {
+    productCard.forEach((item, index) => {
       const productCardClone: Node = productCardTemp.content.cloneNode(true);
       if (!isHTMLElement(productCardClone)) throw new Error(`Element is not HTMLElement!`);
 
-      getExistentElement('.product__photo', productCardClone).dataset.bg = `assets/img/${item.thumbnail}`;
+      const photo = getExistentElement('.product__photo', productCardClone);
+      const bgUrl = `assets/img/${item.thumbnail}`;
+
+      if (index < 3) {
+        photo.style.backgroundImage = `url('${bgUrl}')`;
+        photo.dataset.loaded = 'true';
+      } else {
+        photo.dataset.bg = bgUrl;
+      }
 
       getExistentElement('.product__type', productCardClone).textContent = item.type;
       getExistentElement('.product__title', productCardClone).textContent = item.title;
