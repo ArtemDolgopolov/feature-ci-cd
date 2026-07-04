@@ -189,6 +189,13 @@ class PurchaseModal {
     }
   }
 
+  private closeModal() {
+    this.modalContainer.classList.remove('purchase-modal__active');
+    this.modalContainer.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('body_hold');
+    this.modalContainer.innerHTML = '';
+  }
+
   private buyNow() {
     const modal = getExistentElement('.purchase-modal__wrapper');
     modal.classList.add('purchase-modal__wrapper_hide');
@@ -206,9 +213,7 @@ class PurchaseModal {
         if (Math.abs(a - 3) === 0) {
           this.cart.cleanCart();
           Router.goTo(PagesList.catalogPage);
-          this.modalContainer.classList.remove('purchase-modal__active');
-          document.body.classList.remove('body_hold');
-          this.modalContainer.innerHTML = '';
+          this.closeModal();
         } else {
           message.innerHTML = `Thank you for your purchase. Return to catalog page after ${Math.abs(a - 3)} sec.`;
         }
@@ -225,9 +230,7 @@ class PurchaseModal {
       const target = e.target;
       if (!isHTMLElement(target)) throw new Error(`Element is not HTMLElement!`);
       if (target.classList.contains('purchase-modal')) {
-        this.modalContainer.classList.remove('purchase-modal__active');
-        document.body.classList.remove('body_hold');
-        this.modalContainer.innerHTML = '';
+        this.closeModal();
       }
     });
 
@@ -261,6 +264,7 @@ class PurchaseModal {
 
     this.modalContainer.append(this.modal);
     this.modalContainer.classList.add('purchase-modal__active');
+    this.modalContainer.setAttribute('aria-hidden', 'false');
   }
 }
 

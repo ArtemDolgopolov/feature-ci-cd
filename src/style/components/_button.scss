@@ -148,6 +148,9 @@
   transition: .3s;
   cursor: pointer;
   z-index: 200;
+  border: none;
+  padding: 0;
+  font: inherit;
 
   &:hover {
     transform: scale(.95);

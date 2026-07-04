@@ -105,3 +105,12 @@
     margin-top: -38px;
   }
 }
+
+.sort-control,
+.layout__portrait,
+.layout__landscape {
+  border: none;
+  padding: 0;
+  background-color: transparent;
+  font: inherit;
+}
