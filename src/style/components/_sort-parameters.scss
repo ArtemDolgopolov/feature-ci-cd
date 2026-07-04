@@ -20,7 +20,7 @@
     width: 18px;
     height: 18px;
     background: url('assets/svg/up.svg') center center/contain no-repeat;
-    opacity: 0.3;
+    opacity: 0.85;
     cursor: pointer;
     transition: 0.5s;
     &:hover {
@@ -61,7 +61,7 @@
   font-weight: 500;
 
   &::placeholder {
-    color: variables.$grey-medium;
+    color: variables.$grey-dark;
     font-weight: 400;
   }
 
@@ -82,7 +82,7 @@
     border-radius: 5px;
     background: url('assets/svg/portrait.svg') center center no-repeat;
     background-size: 20px;
-    opacity: 0.3;
+    opacity: 0.85;
     transition: 0.5s;
     cursor: pointer;
 

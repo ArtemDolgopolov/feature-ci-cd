@@ -31,7 +31,7 @@ class ProductCards {
 
       if (item.sale) {
         getExistentElement('.product__discount-num', productCardClone).textContent = item.sale.toString();
-        getExistentElement('.product__price', productCardClone).style.color = '#ab5abb';
+        getExistentElement('.product__price', productCardClone).style.color = '#22795D';
       } else {
         getExistentElement('.product__discount', productCardClone).style.display = 'none';
       }

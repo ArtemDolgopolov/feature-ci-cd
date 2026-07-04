@@ -35,7 +35,7 @@
       right: -8px;
       font-size: 17px;
       font-weight: 900;
-      color: variables.$green-extra-light;
+      color: variables.$white-medium;
     }
 
   }
@@ -44,7 +44,7 @@
     background-color: variables.$purple-medium;
 
     span {
-      color: variables.$purple-light;
+      color: variables.$white-medium;
     }
 
   }
@@ -60,7 +60,7 @@
   }
 
   &__type {
-    color: variables.$green-extra-light;
+    color: variables.$green-medium;
   }
 
   &__title {
@@ -91,7 +91,7 @@
   &__stock {
     margin-top: 5px;
     margin-right: 10px;
-    color: variables.$green-extra-light;
+    color: variables.$green-medium;
     font-size: 0.8em;
     text-align: right;
   }
