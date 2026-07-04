@@ -1,23 +1,27 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const EslintPlugin = require('eslint-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-const mode = process.env.NODE_ENV || 'development';
-const devMode = mode === 'development';
-const target = devMode ? 'web' : 'browserslist';
-const devtool = devMode ? 'source-map' : undefined;
+const publicPath = process.env.PUBLIC_PATH || '/';
 
-module.exports = {
+module.exports = (_env, argv) => {
+  const mode = argv.mode || process.env.NODE_ENV || 'development';
+  const devMode = mode === 'development';
+  const target = devMode ? 'web' : 'browserslist';
+  const devtool = devMode ? 'source-map' : undefined;
+
+  return {
   mode,
   target,
   devtool,
   entry: './src/index.ts',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/',
+    publicPath,
     clean: true,
     filename: '[name].[contenthash].js',
     assetModuleFilename: 'assets/[name][ext]',
@@ -29,9 +33,32 @@ module.exports = {
     hot: true,
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env.PUBLIC_PATH': JSON.stringify(process.env.PUBLIC_PATH || '/'),
+    }),
+
     new HtmlWebpackPlugin({
       template: 'src/index.html',
     }),
+
+    {
+      apply: (compiler) => {
+        compiler.hooks.compilation.tap('LcpPreloadPlugin', (compilation) => {
+          HtmlWebpackPlugin.getHooks(compilation).beforeEmit.tap('LcpPreloadPlugin', (data) => {
+            const href = `${publicPath}assets/img/plants/1/1.jpg`;
+            data.html = data.html.replace(
+              '<title>',
+              `<link rel="preload" as="image" href="${href}" fetchpriority="high"><title>`
+            );
+            data.html = data.html.replace(
+              '<div id="catalog-skeleton" aria-hidden="true"></div>',
+              `<img class="product__photo-img" src="${href}" alt="Echeveria SC-092" width="256" height="256" fetchpriority="high" aria-hidden="true" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none;overflow:hidden"><div id="catalog-skeleton" aria-hidden="true"></div>`
+            );
+            return data;
+          });
+        });
+      },
+    },
 
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash].css',
@@ -54,6 +81,11 @@ module.exports = {
       {
         test: /\.html$/i,
         loader: 'html-loader',
+        options: {
+          sources: {
+            urlFilter: (_attribute, value) => !value.includes('assets/img/plants'),
+          },
+        },
       },
       {
         test: /\.(ts|tsx)$/i,
@@ -63,7 +95,7 @@ module.exports = {
       {
         test: /\.scss$/,
         use: [
-          'style-loader',
+          devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
           'css-loader',
           {
             loader: 'sass-loader',
@@ -122,4 +154,5 @@ module.exports = {
   resolve: {
     extensions: ['.tsx', '.ts', '.jsx', '.js', '...'],
   },
+  };
 };

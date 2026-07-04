@@ -16,10 +16,10 @@ function addActive(target: HTMLElement) {
   const controls = document.querySelectorAll('.sort-control');
   controls.forEach((control) => {
     if (isHTMLElement(control)) {
-      control.style.opacity = '';
+      control.classList.remove('sort-control_active');
     }
   });
-  target.style.opacity = '1';
+  target.classList.add('sort-control_active');
 }
 
 // product counter by type

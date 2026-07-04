@@ -74,9 +74,9 @@
       width: 150px;
       height: 40px;
       background-color: variables.$white-medium;
-      color: variables.$green-light;
+      color: variables.$green-dark;
       border-radius: 20px;
-      border: 1px variables.$green-light solid;
+      border: 1px variables.$green-dark solid;
       cursor: copy;
 
       @media (max-width: 600px) {

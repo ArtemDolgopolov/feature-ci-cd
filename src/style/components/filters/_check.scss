@@ -23,13 +23,13 @@
     height: 16px;
     width: 16px;
     border-radius: 3px;
-    border: 1px solid variables.$grey-light;
+    border: 1px solid variables.$grey-dark;
     transition: 0.5s;
   }
 
   &__found {
     font-size: 0.8em;
-    color: variables.$grey-medium;
+    color: variables.$grey-dark;
     vertical-align: baseline;
   }
 }

@@ -5,22 +5,35 @@ import Router from '../../router';
 
 class ProductCards {
   public cart: Cart;
+
   constructor(cart: Cart) {
     this.cart = cart;
   }
+
   draw(data: Products[]): void {
     const productCard: Products[] = data;
     const fragment: DocumentFragment = document.createDocumentFragment();
     const productCardTemp: HTMLTemplateElement = getExistentElement<HTMLTemplateElement>('#productCardTemp');
 
-    productCard.forEach((item) => {
+    productCard.forEach((item, index) => {
       const productCardClone: Node = productCardTemp.content.cloneNode(true);
       if (!isHTMLElement(productCardClone)) throw new Error(`Element is not HTMLElement!`);
 
-      getExistentElement(
-        '.product__photo',
-        productCardClone
-      ).style.backgroundImage = `url('assets/img/${item.thumbnail}')`;
+      const photo = getExistentElement('.product__photo', productCardClone);
+      const img = document.createElement('img');
+      img.className = 'product__photo-img';
+      img.src = `assets/img/${item.thumbnail}`;
+      img.alt = item.title;
+      img.width = 256;
+      img.height = 256;
+      img.decoding = 'async';
+      photo.prepend(img);
+
+      if (index < 3) {
+        img.setAttribute('fetchpriority', 'high');
+      } else if (index >= 6) {
+        img.loading = 'lazy';
+      }
 
       getExistentElement('.product__type', productCardClone).textContent = item.type;
       getExistentElement('.product__title', productCardClone).textContent = item.title;
@@ -31,7 +44,7 @@ class ProductCards {
 
       if (item.sale) {
         getExistentElement('.product__discount-num', productCardClone).textContent = item.sale.toString();
-        getExistentElement('.product__price', productCardClone).style.color = '#ab5abb';
+        getExistentElement('.product__price', productCardClone).style.color = '#22795D';
       } else {
         getExistentElement('.product__discount', productCardClone).style.display = 'none';
       }

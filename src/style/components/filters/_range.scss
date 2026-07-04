@@ -16,7 +16,7 @@
       font-size: 20px;
       border-radius: 5px;
       text-align: center;
-      border: 1px solid variables.$grey-light;
+      border: 1px solid variables.$grey-dark;
       outline: none;
     }
   }
@@ -54,7 +54,7 @@
 .slider {
   height: 6px;
   position: relative;
-  background: variables.$grey-light;
+  background: variables.$grey-dark;
   border-radius: 6px;
 
   &__progress {
