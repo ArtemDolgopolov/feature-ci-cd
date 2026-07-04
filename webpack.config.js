@@ -6,13 +6,15 @@ const EslintPlugin = require('eslint-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-const mode = process.env.NODE_ENV || 'development';
-const devMode = mode === 'development';
-const target = devMode ? 'web' : 'browserslist';
-const devtool = devMode ? 'source-map' : undefined;
 const publicPath = process.env.PUBLIC_PATH || '/';
 
-module.exports = {
+module.exports = (_env, argv) => {
+  const mode = argv.mode || process.env.NODE_ENV || 'development';
+  const devMode = mode === 'development';
+  const target = devMode ? 'web' : 'browserslist';
+  const devtool = devMode ? 'source-map' : undefined;
+
+  return {
   mode,
   target,
   devtool,
@@ -152,4 +154,5 @@ module.exports = {
   resolve: {
     extensions: ['.tsx', '.ts', '.jsx', '.js', '...'],
   },
+  };
 };
