@@ -24,8 +24,8 @@ class ProductCards {
       img.className = 'product__photo-img';
       img.src = `assets/img/${item.thumbnail}`;
       img.alt = item.title;
-      img.width = 400;
-      img.height = 225;
+      img.width = 256;
+      img.height = 256;
       img.decoding = 'async';
       photo.prepend(img);
 

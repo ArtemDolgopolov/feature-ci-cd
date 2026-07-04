@@ -1,11 +1,16 @@
 .body__wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100%;
+  display: grid;
+  grid-template-rows: auto 5200px 290px auto;
+  width: 100%;
+  min-height: 100%;
   position: relative;
 
+  @media (max-width: 1150px) {
+    grid-template-rows: auto 7200px 290px auto;
+  }
+
   @media (max-width: 600px) {
+    grid-template-rows: auto 11000px 260px auto;
     font-size: 14px;
   }
 }

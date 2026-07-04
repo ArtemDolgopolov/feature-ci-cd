@@ -48,6 +48,10 @@ module.exports = {
               '<title>',
               `<link rel="preload" as="image" href="${href}" fetchpriority="high"><title>`
             );
+            data.html = data.html.replace(
+              '<div id="catalog-skeleton" aria-hidden="true"></div>',
+              `<img class="product__photo-img" src="${href}" alt="Echeveria SC-092" width="256" height="256" fetchpriority="high" aria-hidden="true" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none;overflow:hidden"><div id="catalog-skeleton" aria-hidden="true"></div>`
+            );
             return data;
           });
         });

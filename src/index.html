@@ -6,9 +6,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="./assets/svg/empty-cart-icon.svg">
   <style>
-    #page-container { min-height: 4500px; }
-    @media (max-width: 1150px) { #page-container { min-height: 7200px; } }
-    @media (max-width: 600px) { #page-container { min-height: 11000px; } }
+    .body__wrapper {
+      display: grid;
+      grid-template-rows: auto 5200px 290px auto;
+      width: 100%;
+    }
+    .promo { min-height: 290px; }
+    @media (max-width: 1150px) {
+      .body__wrapper { grid-template-rows: auto 7200px 290px auto; }
+    }
+    @media (max-width: 600px) {
+      .body__wrapper { grid-template-rows: auto 11000px 260px auto; }
+      .promo { min-height: 260px; }
+    }
+    html:not(.app-ready) .promo,
+    html:not(.app-ready) .footer {
+      visibility: hidden;
+    }
+    .main { overflow: hidden; }
+    #page-container { height: 100%; }
   </style>
   <title>Online-store</title>
 </head>
@@ -36,6 +52,7 @@
     </header>
     <main class="main">
       <div class="main__container container" id="page-container">
+        <div id="catalog-skeleton" aria-hidden="true"></div>
       </div>
     </main>
     <section id="promo" class="promo">

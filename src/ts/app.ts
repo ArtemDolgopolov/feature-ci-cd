@@ -24,6 +24,7 @@ class App {
   start() {
     Router.startRouter();
     this.cart.updateHeader();
+    document.documentElement.classList.add('app-ready');
   }
 }
 
