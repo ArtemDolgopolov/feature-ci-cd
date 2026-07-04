@@ -5,37 +5,9 @@ import Router from '../../router';
 
 class ProductCards {
   public cart: Cart;
-  private photoObserver: IntersectionObserver | null = null;
 
   constructor(cart: Cart) {
     this.cart = cart;
-  }
-
-  private observePhotos(container: HTMLElement): void {
-    if (!this.photoObserver) {
-      this.photoObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
-
-            const photo = entry.target as HTMLElement;
-            const bg = photo.dataset.bg;
-
-            if (bg) {
-              photo.style.backgroundImage = `url('${bg}')`;
-              photo.dataset.loaded = 'true';
-            }
-
-            this.photoObserver?.unobserve(entry.target);
-          });
-        },
-        { rootMargin: '200px 0px' }
-      );
-    }
-
-    container.querySelectorAll('.product__photo:not([data-loaded])').forEach((photo) => {
-      this.photoObserver?.observe(photo);
-    });
   }
 
   draw(data: Products[]): void {
@@ -48,13 +20,19 @@ class ProductCards {
       if (!isHTMLElement(productCardClone)) throw new Error(`Element is not HTMLElement!`);
 
       const photo = getExistentElement('.product__photo', productCardClone);
-      const bgUrl = `assets/img/${item.thumbnail}`;
+      const img = document.createElement('img');
+      img.className = 'product__photo-img';
+      img.src = `assets/img/${item.thumbnail}`;
+      img.alt = item.title;
+      img.width = 400;
+      img.height = 225;
+      img.decoding = 'async';
+      photo.prepend(img);
 
-      if (index < 3) {
-        photo.style.backgroundImage = `url('${bgUrl}')`;
-        photo.dataset.loaded = 'true';
-      } else {
-        photo.dataset.bg = bgUrl;
+      if (index === 0) {
+        img.setAttribute('fetchpriority', 'high');
+      } else if (index >= 3) {
+        img.loading = 'lazy';
       }
 
       getExistentElement('.product__type', productCardClone).textContent = item.type;
@@ -83,9 +61,7 @@ class ProductCards {
 
       fragment.append(productCardClone);
     });
-    const container = getExistentElement('.products__container');
-    container.appendChild(fragment);
-    this.observePhotos(container);
+    getExistentElement('.products__container').appendChild(fragment);
   }
 }
 

@@ -8,5 +8,13 @@
 }
 
 .main__container {
-  min-height: 3500px;
+  min-height: 3600px;
+
+  @media (max-width: 1150px) {
+    min-height: 7200px;
+  }
+
+  @media (max-width: 600px) {
+    min-height: 11000px;
+  }
 }
